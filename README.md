@@ -27,7 +27,7 @@ git clone https://github.com/Ramkafasi/whisper-mpv && cd whisper-mpv && chmod +x
 To use whisper-mpv, run the following command:
 
 ```
-whisper-mpv.sh "video-url"
+whisper-mpv "video-url"
 ```
 This command will download, translate and generate subtitles for the video before playing it with mpv.
 

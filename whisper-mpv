@@ -1,0 +1,57 @@
+#!/bin/bash
+# Check if yt-dlp command exists
+command -v yt-dlp >/dev/null 2>&1 || { echo >&2 "yt-dlp command not found. Aborting."; exit 1; }
+# Check if python command exists
+command -v python >/dev/null 2>&1 || { echo >&2 "python command not found. Aborting."; exit 1; }
+# Check if mpv command exists
+command -v mpv >/dev/null 2>&1 || { echo >&2 "mpv command not found. Aborting."; exit 1; }
+
+# Source configuration file
+source $WHISPER_MPV_CONF
+
+# Check if any arguments were provided
+if [ $# -eq 0 ]
+then
+    echo "Please provide at least one URL to process."
+    exit
+fi
+
+# Generate unique filename based on timestamp
+NOW=$(date +"%Y-%m-%d-%H-%M-%S")
+FILENAME="$WHISPER_MPV_LOCATION/video-$NOW"
+
+# Function to remove files
+function remove_files {
+    echo "Removing temporary files..."
+    rm -rf $FILENAME.*
+    exit
+}
+
+# Set trap to remove files on early termination
+trap remove_files SIGINT
+
+# Loop through all URLs provided as arguments
+for URL in "$@"
+do
+    # Download video using yt-dlp
+    if ! yt-dlp -o "$FILENAME.mp4" -f mp4 "$URL"
+    then
+        echo "Failed to download video from $URL"
+        remove_files
+    fi
+
+    # Transcribe video using Whisper
+    if ! python "$WHISPER_MPV_LOCATION/sub-generator.py" "$FILENAME.mp4" --output "$FILENAME.srt" --model "$WHISPER_MODEL" --language "$LANGUAGE"
+    then
+        echo "Failed to transcribe video from $URL"
+        remove_files
+    fi
+
+    # Play video using mpv and remove files on exit
+    if ! mpv --sub-file="$FILENAME.srt" "$FILENAME.mp4"; then
+        echo "Error playing video from $URL"
+        remove_files
+    fi
+
+    remove_files
+done

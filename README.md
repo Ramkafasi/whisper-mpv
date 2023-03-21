@@ -18,7 +18,9 @@ git clone https://github.com/Ramkafasi/whisper-mpv && cd whisper-mpv && chmod +x
 ```
 # Features to be implemented in the next release
 --video flag for using whisper-mpv with locally stored files
+
 --language flag for specifying a language regardless of the config files definition
+
 --scraper flag for selecting different scraper from yt-dlp
 
 # Copyright

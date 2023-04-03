@@ -1,6 +1,6 @@
 # Whisper-mpv
 
-whisper-mpv is a project that automates the process of downloading, translating, and generating subtitles for a video, and then playing it with mpv. The project depends on OpenAI Whisper for generating accurate subtitles.
+whisper-mpv is a project that automates the process of downloading, translating, and generating subtitles for a video, and then playing it with a video player. The project depends on OpenAI Whisper for generating accurate subtitles.
 
 The script uses yt-dlp to download the video and OpenAI Whisper for generating subtitles in the language of your choice. The generated subtitle file is then passed to a video player for playing the video with subtitles.
 

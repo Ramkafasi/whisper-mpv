@@ -2,14 +2,14 @@
 
 whisper-mpv is a project that automates the process of downloading, translating, and generating subtitles for a video, and then playing it with mpv. The project depends on OpenAI Whisper for generating accurate subtitles.
 
-The script uses yt-dlp to download the video and OpenAI's Whisper for generating subtitles in the language of your choice. The generated subtitle file is then passed to mpv for playing the video with subtitles.
+The script uses yt-dlp to download the video and OpenAI Whisper for generating subtitles in the language of your choice. The generated subtitle file is then passed to a video player for playing the video with subtitles.
 
 ## Requirements
 
 To run whisper-mpv, ensure you have the following dependencies installed on your computer:
 
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp)
-- [mpv](https://mpv.io/)
+- [mpv](https://mpv.io/) 
 - [git](https://git-scm.com/)
 - [python](https://www.python.org/)
 - [pip](https://pypi.org/project/pip/)
@@ -35,8 +35,6 @@ This command will download, translate and generate subtitles for the video befor
 
 The following features will be implemented in the next release:
 
-- `--video` flag to allow the use of whisper-mpv with locally stored files
-- `--language` flag to specify a language regardless of the config file's definition
 - `--scraper` flag to select a different scraper from yt-dlp
 
 ## Contributions

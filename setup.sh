@@ -34,9 +34,9 @@ read -p "Installation directory: " user_whisper_mpv_dir
 
 # Use user preference if available, else use default directory
 if [[ ! -z "${user_whisper_mpv_dir}" ]]; then
-    whisper_mpv_dir="${user_whisper_mpv_dir}"
+    whisper_mpv_dir="$(realpath $user_whisper_mpv_dir)"
 else
-    whisper_mpv_dir="${HOME}/.local/bin/"
+    whisper_mpv_dir="${HOME}/.local/bin"
 fi
 
 # Copy whisper-mpv to installation directory
@@ -85,14 +85,35 @@ while true; do
     fi
 done
 
+echo "Submit the player that you prefer to use."
+echo "Default: mpv"
+echo "If you want this script to use the default option, leave this part empty."
+
+while true; do
+    read -p "Preferred player: " player
+    
+    if [[ -z "$player" ]]; then
+        echo "Player option has been set up to mpv"
+        player="mpv"
+	break
+    elif command -v "$player" >/dev/null 2>&1; then
+        echo "Preferred player is $player."	
+        player="${player}"
+        break
+    else
+        echo "Invalid input. Player not found."
+    fi
+done
+
 # Create configuration file
 echo "# Whisper-mpv configuration file" > "${HOME}/.config/whisper-mpv.conf"
 echo "WHISPER_MPV_LOCATION=${sub_gen_dir}" >> "${HOME}/.config/whisper-mpv.conf"
 echo "WHISPER_MODEL=${language_model}" >> "${HOME}/.config/whisper-mpv.conf"
 echo "LANGUAGE=${preferred_language}" >> "${HOME}/.config/whisper-mpv.conf"
+echo "PLAYER=${player}" >> "${HOME}/.config/whisper-mpv.conf"
 
-# Add configuration file location to .bashrc
-echo "export WHISPER_MPV_CONF=${HOME}/.config/whisper-mpv.conf" >> "${HOME}/.bashrc"
+# Add configuration file location to whisper-mpv
+sed -i "s|source \$WHISPER_MPV_CONF|source ${HOME}/.config/whisper-mpv.conf|g" ${whisper_mpv_dir}/whisper-mpv
 
 # Check if $whisper_mpv_dir is in the PATH and add it if it's not
 if [[ ":$PATH:" != *":$whisper_mpv_dir:"* ]]; then

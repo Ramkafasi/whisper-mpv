@@ -31,7 +31,7 @@ whisper-mpv "video-url"
 ```
 This command will download, translate and generate subtitles for the video before playing it with mpv.
 
-# Features to be implemented in the next release
+# Feature to be implemented in the next release
 
 The following features will be implemented in the next release:
 
